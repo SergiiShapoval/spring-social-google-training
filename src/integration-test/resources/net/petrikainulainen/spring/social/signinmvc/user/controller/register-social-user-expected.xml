@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <user_accounts email="john.smith@gmail.com"
+                   first_name="John" last_name="Smith"
+                   role="ROLE_USER"
+                   sign_in_provider="VKONTAKTE"
+                   version="0"/>
+
+    <UserConnection userId="john.smith@gmail.com"
+                    providerId="vkontakte"
+                    providerUserId="johnsmith"
+                    rank="1"
+                    displayName="John Smith"
+                    profileUrl="https://www.vkontakte.com/johnsmith"
+                    imageUrl="https://www.vkontakte.com/images/johnsmith.jpg"
+                    accessToken="accessToken"
+                    secret="secret"
+                    refreshToken="refreshToken"
+                    expireTime="100000"/>
+
+</dataset>

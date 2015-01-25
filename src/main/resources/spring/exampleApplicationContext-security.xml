@@ -2,16 +2,16 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:security="http://www.springframework.org/schema/security"
-       xmlns:http="http://www.springframework.org/schema/security"
+       xmlns:http="http://www.springframework.org/schema/security" xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!-- Static resources such as CSS and JS files are ignored by Spring Security -->
-    <security:http pattern="/static/**" security="none" />
+    <security:http pattern="/static/**" security="none"/>
 
     <security:http use-expressions="true">
         <!-- Enables Spring Security CSRF protection -->
-        <security:csrf/>
+        <!--<security:csrf/>-->
         <!-- Configures the form login -->
         <security:form-login
                 login-page="/login"
@@ -25,17 +25,22 @@
                 logout-success-url="/login"
                 delete-cookies="JESSIONID"/>
         <!-- Anyone can access these urls -->
+        <!--<security:intercept-url pattern="/**" access="permitAll"/>-->
         <security:intercept-url pattern="/auth/**" access="permitAll"/>
         <security:intercept-url pattern="/login" access="permitAll"/>
         <security:intercept-url pattern="/signin/**" access="permitAll"/>
         <security:intercept-url pattern="/signup/**" access="permitAll"/>
         <security:intercept-url pattern="/user/register/**" access="permitAll"/>
+        <!--<security:intercept-url pattern="/" access="permitAll"/>-->
+        <!--<security:intercept-url pattern="/get_lesson_json" access="permitAll"/>-->
+        <!--<security:intercept-url pattern="/get_history" access="permitAll"/>-->
+        <!--<security:intercept-url pattern="/get_lw_res" access="permitAll"/>-->
 
         <!-- The rest of our application is protected. -->
-        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/protected/**" access="hasRole('ROLE_USER')"/>
 
         <!-- Adds social authentication filter to the Spring Security filter chain. -->
-        <security:custom-filter ref="socialAuthenticationFilter" before="PRE_AUTH_FILTER" />
+        <security:custom-filter ref="socialAuthenticationFilter" before="PRE_AUTH_FILTER"/>
     </security:http>
 
     <!--
@@ -91,14 +96,51 @@
         our example, the authorization details are stored as plain text.
         DO NOT USE THIS IN PRODUCTION.
     -->
-    <bean id="textEncryptor" class="org.springframework.security.crypto.encrypt.Encryptors" factory-method="noOpText" />
+    <bean id="textEncryptor" class="org.springframework.security.crypto.encrypt.Encryptors" factory-method="noOpText"/>
 
     <!-- This bean is load the user specific data when form login is used. -->
-    <bean id="userDetailsService" class="net.petrikainulainen.spring.social.signinmvc.security.service.RepositoryUserDetailsService" autowire="constructor"/>
+    <bean id="userDetailsService" class="net.petrikainulainen.spring.social.signinmvc.security.service.RepositoryUserDetailsService"
+          autowire="constructor"/>
 
     <!--
         This bean determines the account ID of the user. The example application
         uses the username as the account ID.
     -->
     <bean id="userIdSource" class="org.springframework.social.security.AuthenticationNameUserIdSource"/>
+
+    <bean id="usersConnectionRepository"
+          class="org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository">
+        <constructor-arg ref="dataSource"/>
+        <constructor-arg ref="myConnectionFactoryLocator"/>
+        <constructor-arg ref="textEncryptor"/>
+    </bean>
+
+    <!--<bean id="connectionRepository" factory-method="createConnectionRepository"-->
+    <!--factory-bean="usersConnectionRepository" scope="request">-->
+    <!--<constructor-arg value="#{request.userPrincipal.name}" />-->
+    <!--<aop:scoped-proxy proxy-target-class="false" />-->
+    <!--</bean>-->
+
+    <bean id="myConnectionFactoryLocator"
+          class="org.springframework.social.connect.support.ConnectionFactoryRegistry">
+        <property name="connectionFactories">
+            <list>
+                <!--<bean class="org.springframework.social.twitter.connect.TwitterConnectionFactory">-->
+                <!--<constructor-arg value="${twitter.consumerKey}" />-->
+                <!--<constructor-arg value="${twitter.consumerSecret}" />-->
+                <!--</bean>-->
+                <bean class="org.springframework.social.facebook.connect.FacebookConnectionFactory">
+                    <constructor-arg value="${facebook.app.id}"/>
+                    <constructor-arg value="${facebook.app.secret}"/>
+                </bean>
+
+                <bean class="org.springframework.social.vkontakte.connect.VKontakteConnectionFactory">
+                    <constructor-arg value="${vkontakte.app.id}"/>
+                    <constructor-arg value="${vkontakte.app.secret}"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+
 </beans>

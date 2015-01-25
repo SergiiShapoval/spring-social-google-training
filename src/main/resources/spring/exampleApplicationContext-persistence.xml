@@ -41,5 +41,6 @@
         </property>
     </bean>
 
+
     <jpa:repositories base-package="net.petrikainulainen.spring.social.signinmvc.user.repository"/>
 </beans>

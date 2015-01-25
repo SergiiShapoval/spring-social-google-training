@@ -128,7 +128,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.16</version>
                 <configuration>
-                    <argLine>${surefireArgLine}</argLine>
                     <!-- Skips unit tests if the value of skip.unit.tests property is true -->
                     <skipTests>${skip.unit.tests}</skipTests>
                     <excludes>
@@ -141,9 +140,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.16</version>
-                <configuration>
-                    <argLine>${failsafeArgLine}</argLine>
-                </configuration>
                 <executions>
                     <!-- States that both integration-test and verify goals of the Failsafe Maven plugin are executed. -->
                     <execution>
@@ -387,6 +383,14 @@
             <artifactId>spring-social-vkontakte</artifactId>
             <version>${spring.social.vkontakte.version}</version>
         </dependency>
+<!--
+        <dependency>
+            <groupId>com.github.weekens</groupId>
+            <artifactId>spring-social-vkontakte</artifactId>
+            <version>1.1.3.M3</version>
+        </dependency>
+-->
+
 
         <!-- CGLIB -->
         <dependency>

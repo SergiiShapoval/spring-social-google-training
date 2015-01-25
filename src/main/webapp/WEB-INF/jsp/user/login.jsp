@@ -55,12 +55,12 @@
             <h2><spring:message code="label.social.sign.in.title"/></h2>
             <div class="row social-button-row">
                 <div class="col-lg-4">
-                    <a href="${pageContext.request.contextPath}/auth/facebook"><button class="btn btn-facebook"><i class="icon-facebook"></i> | <spring:message code="label.facebook.sign.in.button"/></button></a>
+                    <a href="${pageContext.request.contextPath}/auth/facebook?scope=email"><button class="btn btn-facebook"><i class="icon-facebook"></i> | <spring:message code="label.facebook.sign.in.button"/></button></a>
                 </div>
             </div>
             <div class="row social-button-row">
                 <div class="col-lg-4">
-                    <a href="${pageContext.request.contextPath}/auth/vkontakte"><button class="btn btn-vk"><i class="icon-vk"></i> | <spring:message code="label.vkontakte.sign.in.button"/></button></a>
+                    <a href="${pageContext.request.contextPath}/auth/vkontakte?scope=email"><button class="btn btn-vk"><i class="icon-vk"></i> | <spring:message code="label.vkontakte.sign.in.button"/></button></a>
                 </div>
             </div>
             <div class="row social-button-row">

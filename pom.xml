@@ -13,9 +13,8 @@
         You can create an user account by using either "normal" form registration or
         sign in by using a social media service.
     </description>
-<!--
     <repositories>
-        &lt;!&ndash; Fugru repository, contains spring-social-vkontakte &ndash;&gt;
+        <!-- Fugru repository, contains spring-social-vkontakte -->
         <repository>
             <id>snapshot</id>
             <name>Fugru Maven Snapshot Repository</name>
@@ -24,7 +23,6 @@
             <snapshots><enabled>true</enabled></snapshots>
         </repository>
     </repositories>
--->
     <properties>
         <hibernate.version>4.2.4.Final</hibernate.version>
         <liquibase.version>3.1.1</liquibase.version>

@@ -21,7 +21,7 @@
     -->
     <facebook:config app-id="${facebook.app.id}" app-secret="${facebook.app.secret}"/>
     <vkontakte:config app-id="${vkontakte.app.id}" app-secret="${vkontakte.app.secret}"/>
- <!--   <google:config app-id="${google.app.id}" app-secret="${google.app.secret}"/>-->
+    <google:config app-id="${google.app.id}" app-secret="${google.app.secret}"/>
 
     <!--
         Configures the connection repository. This application uses JDBC

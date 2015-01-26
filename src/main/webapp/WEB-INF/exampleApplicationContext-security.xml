@@ -7,11 +7,11 @@
        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!-- Static resources such as CSS and JS files are ignored by Spring Security -->
-    <security:http pattern="/static/**" security="none"/>
+    <security:http pattern="/static/**" security="none" />
 
     <security:http use-expressions="true">
         <!-- Enables Spring Security CSRF protection -->
-        <!--<security:csrf/>-->
+        <security:csrf/>
         <!-- Configures the form login -->
         <security:form-login
                 login-page="/login"
@@ -25,22 +25,17 @@
                 logout-success-url="/login"
                 delete-cookies="JESSIONID"/>
         <!-- Anyone can access these urls -->
-        <!--<security:intercept-url pattern="/**" access="permitAll"/>-->
         <security:intercept-url pattern="/auth/**" access="permitAll"/>
         <security:intercept-url pattern="/login" access="permitAll"/>
         <security:intercept-url pattern="/signin/**" access="permitAll"/>
         <security:intercept-url pattern="/signup/**" access="permitAll"/>
         <security:intercept-url pattern="/user/register/**" access="permitAll"/>
-        <!--<security:intercept-url pattern="/" access="permitAll"/>-->
-        <!--<security:intercept-url pattern="/get_lesson_json" access="permitAll"/>-->
-        <!--<security:intercept-url pattern="/get_history" access="permitAll"/>-->
-        <!--<security:intercept-url pattern="/get_lw_res" access="permitAll"/>-->
 
         <!-- The rest of our application is protected. -->
-        <security:intercept-url pattern="/protected/**" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
 
         <!-- Adds social authentication filter to the Spring Security filter chain. -->
-        <security:custom-filter ref="socialAuthenticationFilter" before="PRE_AUTH_FILTER"/>
+        <security:custom-filter ref="socialAuthenticationFilter" before="PRE_AUTH_FILTER" />
     </security:http>
 
     <!--
@@ -87,7 +82,7 @@
         This bean is used to load the user specific data when social sign in
         is used.
     -->
-    <bean id="socialUserDetailsService" class="net.petrikainulainen.spring.social.signinmvc.security.service.SimpleSocialUserDetailsService">
+    <bean id="socialUserDetailsService" class="net.petrikainulainen.spring.social.signinmvc.security.service.SimpleSocialUserDetailsService" autowire="constructor">
         <constructor-arg index="0" ref="userDetailsService"/>
     </bean>
 
@@ -125,10 +120,6 @@
           class="org.springframework.social.connect.support.ConnectionFactoryRegistry">
         <property name="connectionFactories">
             <list>
-                <!--<bean class="org.springframework.social.twitter.connect.TwitterConnectionFactory">-->
-                <!--<constructor-arg value="${twitter.consumerKey}" />-->
-                <!--<constructor-arg value="${twitter.consumerSecret}" />-->
-                <!--</bean>-->
                 <bean class="org.springframework.social.facebook.connect.FacebookConnectionFactory">
                     <constructor-arg value="${facebook.app.id}"/>
                     <constructor-arg value="${facebook.app.secret}"/>
@@ -137,6 +128,10 @@
                 <bean class="org.springframework.social.vkontakte.connect.VKontakteConnectionFactory">
                     <constructor-arg value="${vkontakte.app.id}"/>
                     <constructor-arg value="${vkontakte.app.secret}"/>
+                </bean>
+                <bean class="org.springframework.social.google.connect.GoogleConnectionFactory">
+                    <constructor-arg value="${google.app.id}"/>
+                    <constructor-arg value="${google.app.secret}"/>
                 </bean>
             </list>
         </property>

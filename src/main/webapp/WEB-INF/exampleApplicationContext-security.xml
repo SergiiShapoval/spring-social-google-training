@@ -91,7 +91,11 @@
         our example, the authorization details are stored as plain text.
         DO NOT USE THIS IN PRODUCTION.
     -->
-    <bean id="textEncryptor" class="org.springframework.security.crypto.encrypt.Encryptors" factory-method="noOpText"/>
+    <!--<bean id="textEncryptor" class="org.springframework.security.crypto.encrypt.Encryptors" factory-method="noOpText"/>-->
+    <bean id="textEncryptor" class="org.springframework.security.crypto.encrypt.Encryptors" factory-method="text">
+        <constructor-arg value="${security.encryptPassword}" />
+        <constructor-arg value="${security.encryptSalt}" />
+    </bean>
 
     <!-- This bean is load the user specific data when form login is used. -->
     <bean id="userDetailsService" class="net.petrikainulainen.spring.social.signinmvc.security.service.RepositoryUserDetailsService"

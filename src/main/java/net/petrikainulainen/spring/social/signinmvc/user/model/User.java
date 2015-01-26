@@ -1,8 +1,7 @@
 package net.petrikainulainen.spring.social.signinmvc.user.model;
 
-import net.petrikainulainen.spring.social.signinmvc.common.model.BaseEntity;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 import javax.persistence.*;
 
 /**
@@ -10,7 +9,30 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "user_accounts")
-public class User extends BaseEntity<Long> {
+public class User {
+
+    @Column(name = "creation_time", nullable = false)
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime creationTime;
+
+    @Column(name = "modification_time", nullable = false)
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime modificationTime;
+
+    @Version
+    private long version;
+
+    @PrePersist
+    public void prePersist() {
+        DateTime now = DateTime.now();
+        this.creationTime = now;
+        this.modificationTime = now;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.modificationTime = DateTime.now();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,7 +66,6 @@ public class User extends BaseEntity<Long> {
         return new Builder();
     }
 
-    @Override
     public Long getId() {
         return id;
     }
@@ -75,16 +96,15 @@ public class User extends BaseEntity<Long> {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("id", id)
-                .append("creationTime", this.getCreationTime())
-                .append("email", email)
-                .append("firstName", firstName)
-                .append("lastName", lastName)
-                .append("modificationTime", this.getModificationTime())
-                .append("signInProvider", this.getSignInProvider())
-                .append("version", this.getVersion())
-                .toString();
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", signInProvider=" + signInProvider +
+                '}';
     }
 
     public static class Builder {
@@ -124,5 +144,17 @@ public class User extends BaseEntity<Long> {
         public User build() {
             return user;
         }
+    }
+
+    public DateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public DateTime getModificationTime() {
+        return modificationTime;
+    }
+
+    public long getVersion() {
+        return version;
     }
 }
